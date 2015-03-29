@@ -4,11 +4,6 @@ Ansible role that secures the SSH daemon of any remote Debian server.
 
 ## Examples
 
-``inventory``
-
-        [all]
-        remote.server.com
-
 ``playbook.yml``
 
         ---
@@ -19,4 +14,4 @@ Ansible role that secures the SSH daemon of any remote Debian server.
 
 Invoke playbook
 
-        ansible-playbook -i inventory playbook.yml
+        ansible-playbook playbook.yml
