@@ -1,0 +1,30 @@
+- name: Update package repository
+  apt: update-cache=yes 
+       cache_valid_time=99360
+
+- name: Install openssh-server and denyhosts  
+  apt: pkg={{ item }} state=installed
+  with_items: 
+  - openssh-server
+  - denyhosts
+
+- name: Forbid SSH access for the root user
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp='PermitRootLogin yes'
+              line='PermitRootLogin no'
+              state=present
+
+- name: Upload denyhosts.conf
+  copy: src=denyhosts.conf
+        dest=/etc/denyhosts.conf
+        owner=root
+        group=root
+
+- name: Ensure that both the SSH and denyhosts daemons run and are set to autostart
+  service: name={{ item }} 
+           state=restarted
+           enabled=true
+  with_items:
+  - ssh
+  - denyhosts
+
